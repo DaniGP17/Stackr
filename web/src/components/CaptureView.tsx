@@ -319,7 +319,7 @@ export default function CaptureView({
               )}
             </div>
 
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex items-center gap-3 flex-wrap">
               <label className="flex items-center gap-2 text-[12px] text-white/50" title="Target per-thread sampling rate. Effective rate is capped by stack-walk time (~45ms / cycle), so rates above ~22 Hz behave the same on slow targets.">
                 <span className="label">RATE</span>
                 <input
