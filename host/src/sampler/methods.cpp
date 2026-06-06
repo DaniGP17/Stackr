@@ -23,7 +23,7 @@ namespace stackr::sampler {
 // ─── .stackr file format ──────────────────────────────────────────────────────
 // Header (32 bytes):
 //   magic        uint64   0x52545153544B5200ULL  ("STACKR\0\0" LE)
-//   version      uint32   2
+//   version      uint32   1
 //   pid          uint32
 //   elapsed_ms   uint64
 //   count        uint64   (number of samples)
@@ -33,7 +33,7 @@ namespace stackr::sampler {
 //   depth        uint16
 //   truncated    uint16
 //   frames       uint64[depth]
-// Symbol table (v2+, after all samples):
+// Symbol table (after all samples):
 //   sym_count    uint64
 //   per symbol:
 //     addr         uint64
@@ -46,14 +46,15 @@ namespace stackr::sampler {
 //     module_base  uint64
 //     displacement uint32
 //     source_line  uint32
-// CPU times section (v3+, after symbol table):
+// CPU times section (after symbol table):
 //   cpu_count    uint64
 //   per entry:
 //     tid          uint32
 //     cpu_100ns    uint64
+// ─────────────────────────────────────────────────────────────────────────────
 
 static constexpr uint64_t kMagic   = 0x52545153544B5200ULL;
-static constexpr uint32_t kVersion = 3;
+static constexpr uint32_t kVersion = 1;
 
 namespace {
 
@@ -290,7 +291,7 @@ std::string handle_load(std::string_view params) {
     if (magic != kMagic)  throw std::runtime_error("not a valid Stackr capture file");
 
     uint32_t version = 0; read_pod(f, version);
-    if (version < 1 || version > 3) throw std::runtime_error("unsupported capture version");
+    if (version != kVersion) throw std::runtime_error("unsupported capture version");
 
     uint32_t pid     = 0; read_pod(f, pid);
     uint64_t elapsed = 0; read_pod(f, elapsed);
@@ -313,8 +314,9 @@ std::string handle_load(std::string_view params) {
         samples.push_back(s);
     }
 
+    // Read symbol table.
     std::unordered_map<uint64_t, symbols::ResolvedFrame> sym_map;
-    if (version >= 2) {
+    {
         uint64_t sym_count = 0; read_pod(f, sym_count);
         if (sym_count > 10'000'000ULL) throw std::runtime_error("file claims too many symbols");
         sym_map.reserve(static_cast<size_t>(sym_count));
@@ -341,9 +343,9 @@ std::string handle_load(std::string_view params) {
         }
     }
 
-    // Read CPU times section (v3+).
+    // Read CPU times section.
     std::unordered_map<uint32_t, uint64_t> cpu_times;
-    if (version >= 3) {
+    {
         uint64_t cpu_count = 0; read_pod(f, cpu_count);
         if (cpu_count > 1'000'000ULL) throw std::runtime_error("file claims too many cpu entries");
         cpu_times.reserve(static_cast<size_t>(cpu_count));
