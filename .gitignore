@@ -1,0 +1,48 @@
+# Build artifacts
+/build/
+/out/
+/bin/
+/dist/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+.cmake/
+
+# MSVC
+*.obj
+*.exp
+*.lib
+*.pdb
+*.ilk
+*.exe
+!host/resources/*.exe
+.vs/
+*.vcxproj.user
+
+# Node / pnpm
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.pnpm-store/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Stackr captures
+*.stackr
+captures/
