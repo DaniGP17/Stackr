@@ -1,0 +1,11 @@
+web/src/lib/**                         linguist-vendored=true
+
+web/src/components/DisassemblyView.tsx linguist-vendored=true
+web/src/components/ProcessPicker.tsx   linguist-vendored=true
+web/src/components/LaunchDialog.tsx    linguist-vendored=true
+web/src/components/SettingsView.tsx    linguist-vendored=true
+
+# Framework configuration  not application code.
+web/next.config.ts                     linguist-detectable=false
+web/next-env.d.ts                      linguist-detectable=false
+web/postcss.config.mjs                 linguist-detectable=false
