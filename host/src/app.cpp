@@ -95,8 +95,9 @@ void App::register_class() {
     wc.hCursor       = LoadCursor(nullptr, IDC_ARROW);
     wc.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
     wc.lpszClassName = kClassName;
-    wc.hIcon         = LoadIconW(hinstance_, IDI_APPLICATION);
-    wc.hIconSm       = LoadIconW(hinstance_, IDI_APPLICATION);
+    wc.hIcon         = LoadIconW(hinstance_, MAKEINTRESOURCEW(1));
+    wc.hIconSm       = static_cast<HICON>(LoadImageW(hinstance_, MAKEINTRESOURCEW(1),
+                           IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
     RegisterClassExW(&wc);
 }
 

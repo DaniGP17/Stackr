@@ -9,6 +9,7 @@
 #define VER_PRODUCTVERSION_STR "0.1.0.0\0"
 #endif
 
+1 ICON "stackr.ico"
 1 RT_MANIFEST "stackr.manifest"
 
 VS_VERSION_INFO VERSIONINFO
